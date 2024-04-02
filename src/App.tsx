@@ -245,12 +245,12 @@ function App() {
           index
           element={
             <PrivateRoute>
-              <PageTitle title="eCommerce Dashboard | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="The Poop" />
               <ECommerce />
             </PrivateRoute>
           }
         />
-        <Route
+        {/* <Route
           path="/calendar"
           element={
             <PrivateRoute>
@@ -258,8 +258,8 @@ function App() {
               <Calendar />
             </PrivateRoute>
           }
-        />
-        <Route
+        /> */}
+        {/* <Route
           path="/profile"
           element={
             <PrivateRoute>
@@ -267,8 +267,8 @@ function App() {
               <Profile />
             </PrivateRoute>
           }
-        />
-        <Route
+        /> */}
+        {/* <Route
           path="/forms/form-elements"
           element={
             <PrivateRoute>
@@ -285,12 +285,12 @@ function App() {
               <FormLayout />
             </PrivateRoute>
           }
-        />
+        /> */}
         <Route
           path="/users"
           element={
             <PrivateRoute>
-              <PageTitle title="Tables | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="The Poop | Users" />
               <User />
             </PrivateRoute>
           }
@@ -299,7 +299,7 @@ function App() {
           path="/trivia"
           element={
             <PrivateRoute>
-              <PageTitle title="Tables | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="The Poop | Trivia" />
               <Trivia />
             </PrivateRoute>
           }
@@ -309,7 +309,7 @@ function App() {
           path="/joke"
           element={
             <PrivateRoute>
-              <PageTitle title="Tables | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="The Poop | Joke" />
               <Joke />
             </PrivateRoute>
           }
@@ -318,7 +318,7 @@ function App() {
           path="/poop"
           element={
             <PrivateRoute>
-              <PageTitle title="" />
+              <PageTitle title="The Poop | Poop" />
               <Poop />
             </PrivateRoute>
           }
