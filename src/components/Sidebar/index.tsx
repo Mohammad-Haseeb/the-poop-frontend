@@ -159,7 +159,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   }`}
                 >
                   <FaPoop />
-                  Poop
+                  Toilet
                 </NavLink>
               </li>
               {/* <!-- Menu Item Review --> */}

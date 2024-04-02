@@ -62,7 +62,15 @@ const SignIn: React.FC = () => {
 
         <div className="w-full border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
           <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
-            <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
+            <div className="flex justify-center">
+              <img
+                src={Logo}
+                alt="Logo"
+                // style={{ width: '50px', height: '50px' }}
+                className="w-20 h-20 lg:w-52  lg:h-36"
+              />
+            </div>
+            <h2 className="mb-9 text-center text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
               Sign In to The Poop
             </h2>
 

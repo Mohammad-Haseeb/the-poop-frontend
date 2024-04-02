@@ -6,7 +6,7 @@ import EditJoke from './EditJoke';
 const JokeComponents = () => {
   const [jokeData, setJokeData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   let userData = localStorage.getItem('user');
   const [reloadData, setReloadData] = useState(false);
 
@@ -54,10 +54,16 @@ const JokeComponents = () => {
       headers: headers,
     })
       .then((response) => response.json())
-      .then((data) => setJokeData(data))
-      .catch((error) => console.error('Error fetching data:', error));
+      .then((data) => {
+        if (data.status) {
+          setJokeData([]);
+        } else {
+          setJokeData(data);
+        }
+      })
+      .catch((error) => console.log('Error fetching data:', error));
   }, [reloadData]);
-  console.log(jokeData);
+  console.log('jokeData :', jokeData);
 
   const deleteTrivia = (id: any) => {
     const headers = {
@@ -116,11 +122,8 @@ const JokeComponents = () => {
             </tr>
           </thead>
           <tbody>
-            {currentItems.length === 0 ? (
-              <Loader />
-            ) : (
-              currentItems &&
-              currentItems.map((data, key) => {
+            {currentItems &&
+              currentItems?.map((data, key) => {
                 return (
                   <>
                     <tr className="" key={key}>
@@ -175,8 +178,7 @@ const JokeComponents = () => {
                     </tr>
                   </>
                 );
-              })
-            )}
+              })}
           </tbody>
         </table>
         {jokeData.length > itemsPerPage && (

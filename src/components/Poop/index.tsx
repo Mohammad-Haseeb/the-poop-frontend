@@ -71,22 +71,26 @@ const PoopComponents = () => {
     })
       .then((response) => response.json())
       .then(async (data) => {
-        setPoopData(data);
+        if (data.status) {
+          setPoopData([]);
+        } else {
+          setPoopData(data);
 
-        // Fetch address for each latitude and longitude pair
-        const promises = data.map(async (item: any) => {
-          const response = await fetch(
-            `https://maps.googleapis.com/maps/api/geocode/json?latlng=${item.latitude},${item.longitude}&key=AIzaSyAio7xWYbTSPn9tXZygNECd5h0Rejwoagc`,
-          );
-          const json = await response.json();
-          console.log('json : ', json);
-          setAddressData((prevData) => ({
-            ...prevData,
-            [item.id]:
-              json.results[0]?.formatted_address ?? 'Address not found',
-          }));
-        });
-        await Promise.all(promises);
+          // Fetch address for each latitude and longitude pair
+          const promises = data.map(async (item: any) => {
+            const response = await fetch(
+              `https://maps.googleapis.com/maps/api/geocode/json?latlng=${item.latitude},${item.longitude}&key=AIzaSyAio7xWYbTSPn9tXZygNECd5h0Rejwoagc`,
+            );
+            const json = await response.json();
+            console.log('json : ', json);
+            setAddressData((prevData) => ({
+              ...prevData,
+              [item.id]:
+                json.results[0]?.formatted_address ?? 'Address not found',
+            }));
+          });
+          await Promise.all(promises);
+        }
       })
       .catch((error) => console.error('Error fetching data:', error));
   }, [reloadData]);
@@ -155,68 +159,64 @@ const PoopComponents = () => {
             </tr>
           </thead>
           <tbody>
-            {currentItems.length === 0 ? (
-              <Loader />
-            ) : (
-              currentItems.map((data, index) => {
-                const itemIndex = firstItemIndex + index + 1; // +1 to start index from 1 instead of 0
-                return (
-                  <tr key={itemIndex}>
-                    <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
-                      {itemIndex}
-                    </td>
-                    <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
-                      {data['latitude'] ?? '--'}
-                    </td>
-                    <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
-                      {data['longitude'] ?? '--'}
-                    </td>
-                    <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
-                      {addressData[data['id']] ?? '--'}
-                    </td>
-                    <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
-                      {data['createdAt']
-                        ? new Date(data['createdAt'])
-                            .toLocaleString()
-                            .replaceAll('/', '-')
-                        : '--'}
-                    </td>
-                    <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
-                      {data['user']['userName'] ?? '--'}
-                    </td>
-                    <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
-                      <label className="relative inline-flex cursor-pointer items-center">
-                        <input
-                          id="switch"
-                          type="checkbox"
-                          className="peer sr-only"
-                          checked={data['approved']}
-                          onChange={() => toggleRole(data)}
-                        />
-                        <label htmlFor="switch" className="hidden"></label>
-                        <div className="peer h-6 w-11 rounded-full border bg-slate-200 after:absolute after:left-[2px] after:top-0.5 after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-slate-800 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:ring-green-300"></div>
-                      </label>
-                    </td>
-                    <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
-                      <span className="inline-flex space-x-2">
-                        <button
-                          onClick={() => deleteTrivia(data['id'])}
-                          className="mb-4 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
-                          type="button"
-                        >
-                          Delete
-                        </button>
-                        <EditPoop
-                          reloadData={reloadData}
-                          setReloadData={setReloadData}
-                          data={data}
-                        />
-                      </span>
-                    </td>
-                  </tr>
-                );
-              })
-            )}
+            {currentItems.map((data, index) => {
+              const itemIndex = firstItemIndex + index + 1; // +1 to start index from 1 instead of 0
+              return (
+                <tr key={itemIndex}>
+                  <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
+                    {itemIndex}
+                  </td>
+                  <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
+                    {data['latitude'] ?? '--'}
+                  </td>
+                  <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
+                    {data['longitude'] ?? '--'}
+                  </td>
+                  <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
+                    {addressData[data['id']] ?? '--'}
+                  </td>
+                  <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
+                    {data['createdAt']
+                      ? new Date(data['createdAt'])
+                          .toLocaleString()
+                          .replaceAll('/', '-')
+                      : '--'}
+                  </td>
+                  <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
+                    {data['user']['userName'] ?? '--'}
+                  </td>
+                  <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
+                    <label className="relative inline-flex cursor-pointer items-center">
+                      <input
+                        id="switch"
+                        type="checkbox"
+                        className="peer sr-only"
+                        checked={data['approved']}
+                        onChange={() => toggleRole(data)}
+                      />
+                      <label htmlFor="switch" className="hidden"></label>
+                      <div className="peer h-6 w-11 rounded-full border bg-slate-200 after:absolute after:left-[2px] after:top-0.5 after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-slate-800 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:ring-green-300"></div>
+                    </label>
+                  </td>
+                  <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
+                    <span className="inline-flex space-x-2">
+                      <button
+                        onClick={() => deleteTrivia(data['id'])}
+                        className="mb-4 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+                        type="button"
+                      >
+                        Delete
+                      </button>
+                      <EditPoop
+                        reloadData={reloadData}
+                        setReloadData={setReloadData}
+                        data={data}
+                      />
+                    </span>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
         {poopData.length > itemsPerPage && (

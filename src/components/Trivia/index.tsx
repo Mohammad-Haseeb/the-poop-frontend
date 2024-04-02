@@ -53,7 +53,13 @@ const TriviaComponents = () => {
       headers: headers,
     })
       .then((response) => response.json())
-      .then((data) => setTriviaData(data))
+      .then((data) => {
+        if (data.status) {
+          setTriviaData([]);
+        } else {
+          setTriviaData(data);
+        }
+      })
       .catch((error) => console.error('Error fetching data:', error));
   }, [reloadData]);
   console.log(triviaData);
@@ -115,10 +121,7 @@ const TriviaComponents = () => {
             </tr>
           </thead>
           <tbody>
-            {currentItems.length === 0 ? (
-              <Loader />
-            ) : (
-              currentItems &&
+            {currentItems &&
               currentItems.map((data, key) => {
                 console.log('o : ', data);
                 return (
@@ -175,8 +178,7 @@ const TriviaComponents = () => {
                     </tr>
                   </>
                 );
-              })
-            )}
+              })}
           </tbody>
         </table>
         {triviaData.length > itemsPerPage && (

@@ -61,7 +61,7 @@ const EditPoop = ({
         className="mb-4 block text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
         type="button"
       >
-        Edit Poop
+        Edit Toilet
       </button>
 
       {isModalOpen && (
@@ -111,8 +111,8 @@ const EditPoop = ({
                   <div className="mb-5">
                     <input
                       type="submit"
-                      value="Edit Trivia"
-                      className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
+                      value="Edit Toilet"
+                      className="w-full cursor-pointer rounded-lg border border-primary bg-red-800 p-4 text-white transition hover:bg-opacity-90"
                     />
                   </div>
                 </form>

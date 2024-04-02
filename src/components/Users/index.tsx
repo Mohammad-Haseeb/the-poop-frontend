@@ -26,7 +26,13 @@ const PoopComponents = () => {
       headers: headers,
     })
       .then((response) => response.json())
-      .then((data) => setPoopData(data))
+      .then((data) => {
+        if (data.status) {
+          setPoopData([]);
+        } else {
+          setPoopData(data);
+        }
+      })
       .catch((error) => console.error('Error fetching data:', error));
   }, [reloadData]);
 
@@ -124,75 +130,71 @@ const PoopComponents = () => {
             </tr>
           </thead>
           <tbody>
-            {currentItems.length === 0 ? (
-              <Loader />
-            ) : (
-              currentItems.map((data, index) => {
-                console.log(
-                  'Name : ',
-                  data['userName'],
-                  ' :role ',
-                  data['admin'],
-                );
-                const itemIndex = firstItemIndex + index + 1; // +1 to start index from 1 instead of 0
-                return (
-                  <tr key={itemIndex}>
-                    <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
-                      {itemIndex}
-                    </td>
-                    <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
-                      {data['email'] ?? '--'}
-                    </td>
-                    <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
-                      {data['userName'] ?? '--'}
-                    </td>
-                    <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
-                      {data['admin'] ? 'Admin' : 'User'}
-                    </td>
-                    <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
-                      {data['autoFlushingToilets'] === null ? (
-                        '--'
-                      ) : data['is_verified'] ? (
-                        <FaCheck />
-                      ) : (
-                        <FaX />
-                      )}
-                    </td>
-                    <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
-                      {data['createdAt']
-                        ? new Date(data['createdAt'])
-                            .toLocaleString()
-                            .replaceAll('/', '-')
-                        : '--'}
-                    </td>
-                    <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
-                      <label className="relative inline-flex cursor-pointer items-center">
-                        <input
-                          id="switch"
-                          type="checkbox"
-                          className="peer sr-only"
-                          checked={data['admin']}
-                          onChange={() => toggleRole(data)}
-                        />
-                        <label htmlFor="switch" className="hidden"></label>
-                        <div className="peer h-6 w-11 rounded-full border bg-slate-200 after:absolute after:left-[2px] after:top-0.5 after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-slate-800 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:ring-green-300"></div>
-                      </label>
-                    </td>
-                    <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
-                      <span className="inline-flex space-x-2">
-                        <button
-                          onClick={() => deleteTrivia(data['id'])}
-                          className="mb-4 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
-                          type="button"
-                        >
-                          Delete
-                        </button>
-                      </span>
-                    </td>
-                  </tr>
-                );
-              })
-            )}
+            {currentItems.map((data, index) => {
+              console.log(
+                'Name : ',
+                data['userName'],
+                ' :role ',
+                data['admin'],
+              );
+              const itemIndex = firstItemIndex + index + 1; // +1 to start index from 1 instead of 0
+              return (
+                <tr key={itemIndex}>
+                  <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
+                    {itemIndex}
+                  </td>
+                  <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
+                    {data['email'] ?? '--'}
+                  </td>
+                  <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
+                    {data['userName'] ?? '--'}
+                  </td>
+                  <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
+                    {data['admin'] ? 'Admin' : 'User'}
+                  </td>
+                  <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
+                    {data['autoFlushingToilets'] === null ? (
+                      '--'
+                    ) : data['is_verified'] ? (
+                      <FaCheck />
+                    ) : (
+                      <FaX />
+                    )}
+                  </td>
+                  <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
+                    {data['createdAt']
+                      ? new Date(data['createdAt'])
+                          .toLocaleString()
+                          .replaceAll('/', '-')
+                      : '--'}
+                  </td>
+                  <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
+                    <label className="relative inline-flex cursor-pointer items-center">
+                      <input
+                        id="switch"
+                        type="checkbox"
+                        className="peer sr-only"
+                        checked={data['admin']}
+                        onChange={() => toggleRole(data)}
+                      />
+                      <label htmlFor="switch" className="hidden"></label>
+                      <div className="peer h-6 w-11 rounded-full border bg-slate-200 after:absolute after:left-[2px] after:top-0.5 after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-slate-800 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:ring-green-300"></div>
+                    </label>
+                  </td>
+                  <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
+                    <span className="inline-flex space-x-2">
+                      <button
+                        onClick={() => deleteTrivia(data['id'])}
+                        className="mb-4 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+                        type="button"
+                      >
+                        Delete
+                      </button>
+                    </span>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
         {poopData.length > itemsPerPage && (

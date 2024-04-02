@@ -7,7 +7,7 @@ import DefaultLayout from '../layout/DefaultLayout';
 const Poop = () => {
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="Poop" />
+      <Breadcrumb pageName="Toilet" />
       <div className="flex flex-col gap-10">
         <PoopComponents />
       </div>
