@@ -3,7 +3,11 @@ import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 // import SidebarLinkGroup from './SidebarLinkGroup';
 import Logo from '../../images/logo/logo.png';
 import { LuUsers2 } from 'react-icons/lu';
-import { MdOutlineNotListedLocation, MdOutlineReviews } from 'react-icons/md';
+import {
+  MdOutlineConnectWithoutContact,
+  MdOutlineNotListedLocation,
+  MdOutlineReviews,
+} from 'react-icons/md';
 import { FaPoop } from 'react-icons/fa6';
 import { GiCardJoker } from 'react-icons/gi';
 
@@ -162,6 +166,21 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   Toilet
                 </NavLink>
               </li>
+              {/* <!-- Menu Item Suggestion  --> */}
+
+              <li>
+                <NavLink
+                  to="/suggestions"
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                    pathname.includes('suggestions') &&
+                    'bg-graydark dark:bg-meta-4'
+                  }`}
+                >
+                  <MdOutlineConnectWithoutContact />
+                  Suggestions
+                </NavLink>
+              </li>
+
               {/* <!-- Menu Item Review --> */}
               <li>
                 <NavLink

@@ -199,6 +199,7 @@ import Joke from './pages/Joke';
 import Poop from './pages/Poop';
 import User from './pages/User';
 import Review from './pages/Review';
+import Suggestions from './pages/Suggestion';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -329,6 +330,16 @@ function App() {
             <PrivateRoute>
               <PageTitle title="" />
               <Review />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/suggestions"
+          element={
+            <PrivateRoute>
+              <PageTitle title="The Poop | Suggestions" />
+              <Suggestions />
             </PrivateRoute>
           }
         />

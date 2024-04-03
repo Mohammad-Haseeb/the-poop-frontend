@@ -28,7 +28,6 @@ const DropdownUser = () => {
     return () => document.removeEventListener('click', clickHandler);
   });
 
-  console.log('U : ', usersData['user']);
   // close if the esc key is pressed
   useEffect(() => {
     const keyHandler = ({ keyCode }: KeyboardEvent) => {
@@ -53,7 +52,7 @@ const DropdownUser = () => {
           </span>
         </span>
 
-        <span className="h-12 w-12 rounded-full">
+        {/* <span className="h-12 w-12 rounded-full">
           {usersData['user']['profile_image_url'] ? (
             <img
               src={usersData['user']['profile_image_url']}
@@ -66,7 +65,7 @@ const DropdownUser = () => {
           ) : (
             <div className="w-12 h-12 rounded-full bg-gray flex justify-center items-center"></div>
           )}
-        </span>
+        </span> */}
         {/* 
         <svg
           className="hidden fill-current sm:block"
