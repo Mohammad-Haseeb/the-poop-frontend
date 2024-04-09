@@ -20,7 +20,7 @@ const AddJoke = ({
   };
   const submit = async (event: React.FormEvent) => {
     event.preventDefault();
-    const url = 'http://143.198.97.74:3001/jokes';
+    const url = 'https://api.needtopoop.com/jokes';
     const body = {
       joke: joke,
     };

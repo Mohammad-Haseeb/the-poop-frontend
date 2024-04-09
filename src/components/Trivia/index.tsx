@@ -11,7 +11,7 @@ const TriviaComponents = () => {
   const [reloadData, setReloadData] = useState(false);
   const toggleRole = async (selectedUserData: any) => {
     console.log('SELECTED USER DATA : ', selectedUserData);
-    const url = `http://143.198.97.74:3001/trivia/changeStatus/${selectedUserData.id}`;
+    const url = `https://api.needtopoop.com/trivia/changeStatus/${selectedUserData.id}`;
 
     try {
       const response = await fetch(url, {
@@ -48,7 +48,7 @@ const TriviaComponents = () => {
       Authorization: `Bearer ${userData}`,
     };
 
-    fetch('http://143.198.97.74:3001/trivia', {
+    fetch('https://api.needtopoop.com/trivia', {
       method: 'GET',
       headers: headers,
     })
@@ -70,7 +70,7 @@ const TriviaComponents = () => {
       Authorization: `Bearer ${userData}`,
     };
 
-    fetch(`http://143.198.97.74:3001/trivia/${id}`, {
+    fetch(`https://api.needtopoop.com/trivia/${id}`, {
       method: 'DELETE',
       headers: headers,
     })

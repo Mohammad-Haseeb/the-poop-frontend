@@ -21,7 +21,7 @@ const EditJoke = ({
   };
   const submit = async (event: React.FormEvent) => {
     event.preventDefault();
-    const url = `http://143.198.97.74:3001/jokes/${data.id}`;
+    const url = `https://api.needtopoop.com/jokes/${data.id}`;
     const body = {
       joke: joke,
     };

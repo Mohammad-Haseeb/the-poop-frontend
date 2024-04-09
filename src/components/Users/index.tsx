@@ -21,7 +21,7 @@ const PoopComponents = () => {
       Authorization: `Bearer ${userData}`,
     };
 
-    fetch('http://143.198.97.74:3001/users', {
+    fetch('https://api.needtopoop.com/users', {
       method: 'GET',
       headers: headers,
     })
@@ -38,7 +38,7 @@ const PoopComponents = () => {
 
   const toggleRole = async (selectedUserData: any) => {
     console.log('SELECTED USER DATA : ', selectedUserData);
-    const url = `http://143.198.97.74:3001/users/changeRole/${selectedUserData.id}`;
+    const url = `https://api.needtopoop.com/users/changeRole/${selectedUserData.id}`;
 
     try {
       const response = await fetch(url, {
@@ -70,7 +70,7 @@ const PoopComponents = () => {
       Authorization: `Bearer ${userData}`,
     };
 
-    fetch(`http://143.198.97.74:3001/users/${id}`, {
+    fetch(`https://api.needtopoop.com/users/${id}`, {
       method: 'DELETE',
       headers: headers,
     })

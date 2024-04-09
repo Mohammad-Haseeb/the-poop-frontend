@@ -21,7 +21,7 @@ const EditTrivia = ({
   };
   const submit = async (event: React.FormEvent) => {
     event.preventDefault();
-    const url = `http://143.198.97.74:3001/trivia/${data.id}`;
+    const url = `https://api.needtopoop.com/trivia/${data.id}`;
     const body = {
       trivia: trivia,
     };
