@@ -22,7 +22,7 @@ const ReviewComponents = () => {
 
   const toggleRole = async (selectedUserData: any) => {
     console.log('SELECTED USER DATA : ', selectedUserData);
-    const url = `http://143.198.97.74:3001/review/changeStatus/${selectedUserData.id}`;
+    const url = `https://api.needtopoop.com/review/changeStatus/${selectedUserData.id}`;
 
     try {
       const response = await fetch(url, {
@@ -55,7 +55,7 @@ const ReviewComponents = () => {
       Authorization: `Bearer ${userData}`,
     };
 
-    fetch('http://143.198.97.74:3001/review', {
+    fetch('https://api.needtopoop.com/review', {
       method: 'GET',
       headers: headers,
     })
@@ -90,7 +90,7 @@ const ReviewComponents = () => {
       Authorization: `Bearer ${userData}`,
     };
 
-    fetch(`http://143.198.97.74:3001/review/${id}`, {
+    fetch(`https://api.needtopoop.com/review/${id}`, {
       method: 'DELETE',
       headers: headers,
     })

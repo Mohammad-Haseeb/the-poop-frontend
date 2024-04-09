@@ -13,7 +13,7 @@ const SuggestionComponents = () => {
   console.log('USER DATA', userData);
   const toggleRole = async (selectedUserData: any) => {
     console.log('SELECTED USER DATA : ', selectedUserData);
-    const url = `http://143.198.97.74:3001/jokes/changeStatus/${selectedUserData.id}`;
+    const url = `https://api.needtopoop.com/jokes/changeStatus/${selectedUserData.id}`;
 
     try {
       const response = await fetch(url, {
@@ -46,7 +46,7 @@ const SuggestionComponents = () => {
       Authorization: `Bearer ${userData}`,
     };
 
-    fetch('http://143.198.97.74:3001/suggestions', {
+    fetch('https://api.needtopoop.com/suggestions', {
       method: 'GET',
       headers: headers,
     })
@@ -68,7 +68,7 @@ const SuggestionComponents = () => {
       Authorization: `Bearer ${userData}`,
     };
 
-    fetch(`http://143.198.97.74:3001/suggestions/${id}`, {
+    fetch(`https://api.needtopoop.com/suggestions/${id}`, {
       method: 'DELETE',
       headers: headers,
     })

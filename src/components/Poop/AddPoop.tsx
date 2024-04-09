@@ -22,7 +22,7 @@ const AddPoop = ({
   };
   const submit = async (event: React.FormEvent) => {
     event.preventDefault();
-    const url = 'http://143.198.97.74:3001/poop';
+    const url = 'https://api.needtopoop.com/poop';
     const body = {
       latitude,
       longitude,
