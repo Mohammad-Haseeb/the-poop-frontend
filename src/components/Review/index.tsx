@@ -7,7 +7,7 @@ const ReviewComponents = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const [addressData, setAddressData] = useState({});
-  const [comment, setComment] = useState();
+  const [selectedRowData, setSelectedRowData] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const toggleModal = () => {
@@ -72,7 +72,6 @@ const ReviewComponents = () => {
               `https://maps.googleapis.com/maps/api/geocode/json?latlng=${item.latitude},${item.longitude}&key=AIzaSyAio7xWYbTSPn9tXZygNECd5h0Rejwoagc`,
             );
             const json = await response.json();
-            console.log('json : ', json);
             setAddressData((prevData) => ({
               ...prevData,
               [item.id]:
@@ -122,40 +121,12 @@ const ReviewComponents = () => {
               <th className="py-4 px-4 font-bold text-xl text-black dark:text-white">
                 Id
               </th>
-              <th className="py-4 px-20 font-medium text-xl text-black dark:text-white">
+              <th className="py-4 px-4 font-medium text-xl text-black dark:text-white">
                 Address
               </th>
               <th className="py-4 px-4 font-medium text-xl text-black dark:text-white">
-                Auto Flushing Toilets
+                Comments
               </th>
-              <th className="py-4 px-4 font-medium text-xl text-black dark:text-white">
-                Baby Changing Table
-              </th>
-              <th className="py-4 px-4 font-medium text-xl text-black dark:text-white">
-                Free Toilet
-              </th>
-              <th className="py-4 px-4 font-medium text-xl text-black dark:text-white">
-                Hand Dryer
-              </th>
-              <th className="py-4 px-4 font-medium text-xl text-black dark:text-white">
-                Handicap Accessible
-              </th>
-              <th className="py-4 px-4 font-medium text-xl text-black dark:text-white">
-                Motion Activates Fixtures
-              </th>
-              <th className="py-4 px-4 font-medium text-xl text-black dark:text-white">
-                Number Of Stalls
-              </th>
-              <th className="py-4 px-4 font-medium text-xl text-black dark:text-white">
-                Paper Towels
-              </th>
-              <th className="py-4 px-4 font-medium text-xl text-black dark:text-white">
-                Ratings
-              </th>
-              <th className="py-4 px-4 font-medium text-xl text-black dark:text-white">
-                Seat Covers
-              </th>
-
               <th className="py-4 px-4 font-medium text-black dark:text-white">
                 Created At
               </th>
@@ -183,83 +154,9 @@ const ReviewComponents = () => {
                     {addressData[data['id']] ?? '--'}
                   </td>
                   <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
-                    {data['autoFlushingToilets'] === null ? (
-                      '--'
-                    ) : data['autoFlushingToilets'] ? (
-                      <FaCheck />
-                    ) : (
-                      <FaX />
-                    )}
+                    {data['comments'] ?? '--'}
                   </td>
-                  <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
-                    {data['babyChangingtable'] === null ? (
-                      '--'
-                    ) : data['babyChangingtable'] ? (
-                      <FaCheck />
-                    ) : (
-                      <FaX />
-                    )}
-                  </td>
-                  <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
-                    {data['freeToilet'] === null ? (
-                      '--'
-                    ) : data['freeToilet'] ? (
-                      <FaCheck />
-                    ) : (
-                      <FaX />
-                    )}
-                  </td>
-                  <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
-                    {data['handDryer'] === null ? (
-                      '--'
-                    ) : data['handDryer'] ? (
-                      <FaCheck />
-                    ) : (
-                      <FaX />
-                    )}
-                  </td>
-                  <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
-                    {data['handicapAccessible'] === null ? (
-                      '--'
-                    ) : data['handicapAccessible'] ? (
-                      <FaCheck />
-                    ) : (
-                      <FaX />
-                    )}
-                  </td>
-                  <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
-                    {data['motionActivatesFixtures'] === null ? (
-                      '--'
-                    ) : data['motionActivatesFixtures'] ? (
-                      <FaCheck />
-                    ) : (
-                      <FaX />
-                    )}
-                  </td>
-                  <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
-                    {data['numberOfStalls'] ?? '--'}
-                  </td>
-                  <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
-                    {data['paperTowels'] === null ? (
-                      '--'
-                    ) : data['paperTowels'] ? (
-                      <FaCheck />
-                    ) : (
-                      <FaX />
-                    )}
-                  </td>
-                  <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
-                    {data['ratings'] ?? '--'}
-                  </td>
-                  <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
-                    {data['seatCovers'] === null ? (
-                      '--'
-                    ) : data['seatCovers'] ? (
-                      <FaCheck />
-                    ) : (
-                      <FaX />
-                    )}
-                  </td>
+
                   <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
                     {data['createdAt']
                       ? new Date(data['createdAt'])
@@ -294,13 +191,13 @@ const ReviewComponents = () => {
                       </button>
                       <button
                         onClick={() => {
-                          setComment(data['comments']);
+                          setSelectedRowData(data);
                           toggleModal();
                         }}
                         className="mb-4 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
                         type="button"
                       >
-                        View Comments
+                        View Details
                       </button>
                     </span>
                   </td>
@@ -335,9 +232,129 @@ const ReviewComponents = () => {
           className="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full h-full"
         >
           <div className="relative p-4 w-full max-w-md h-auto">
-            <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
-              <h1 className="text-center py-4 font-bold text-xl text-black">
-                {comment ?? 'No Comment'}
+            <div className="relative px-4 bg-white rounded-lg shadow dark:bg-gray-700">
+              <h1 className="py-4 font-bold text-xl text-black text-center">
+                Details
+              </h1>
+              <h1 className="py-4 text-xl text-black flex items-center">
+                <span className="font-bold">Auto Flushing Toilets:</span>
+                <span className="ml-2">
+                  {selectedRowData['autoFlushingToilets'] === null ? (
+                    '--'
+                  ) : selectedRowData['autoFlushingToilets'] ? (
+                    <FaCheck />
+                  ) : (
+                    <FaX />
+                  )}
+                </span>
+              </h1>
+              <h1 className="py-4  text-xl text-black flex items-center">
+                <span className="font-bold"> Baby Changing Table: </span>
+                <span className="ml-2">
+                  {selectedRowData['babyChangingtable'] === null ? (
+                    '--'
+                  ) : selectedRowData['babyChangingtable'] ? (
+                    <FaCheck />
+                  ) : (
+                    <FaX />
+                  )}
+                </span>
+              </h1>
+              <h1 className="py-4  text-xl text-black flex items-center">
+                <span className="font-bold">Free Toilet: </span>
+                <span className="ml-2">
+                  {selectedRowData['freeToilet'] === null ? (
+                    '--'
+                  ) : selectedRowData['freeToilet'] ? (
+                    <FaCheck />
+                  ) : (
+                    <FaX />
+                  )}
+                </span>
+              </h1>
+              <h1 className="py-4  text-xl text-black flex items-center">
+                <span className="font-bold">Hand Dryer: </span>
+                <span className="ml-2">
+                  {selectedRowData['handDryer'] === null ? (
+                    '--'
+                  ) : selectedRowData['handDryer'] ? (
+                    <FaCheck />
+                  ) : (
+                    <FaX />
+                  )}
+                </span>
+              </h1>
+              <h1 className="py-4 text-xl text-black flex items-center">
+                <span className="font-bold">Handicap Accessible: </span>
+                <span className="ml-2">
+                  {selectedRowData['handicapAccessible'] === null ? (
+                    '--'
+                  ) : selectedRowData['handicapAccessible'] ? (
+                    <FaCheck />
+                  ) : (
+                    <FaX />
+                  )}
+                </span>
+              </h1>
+              <h1 className="py-4 text-xl text-black flex items-center">
+                <span className="font-bold">Motion Activates Fixtures: </span>
+                <span className="ml-2">
+                  {selectedRowData['motionActivatesFixtures'] === null ? (
+                    '--'
+                  ) : selectedRowData['motionActivatesFixtures'] ? (
+                    <FaCheck />
+                  ) : (
+                    <FaX />
+                  )}
+                </span>
+              </h1>
+              <h1 className="py-4  text-xl text-black">
+                <span className="font-bold">Number Of Stalls: </span>
+                <span className="ml-2">
+                  {selectedRowData['numberOfStalls'] ?? '--'}
+                </span>
+              </h1>
+              <h1 className="py-4 text-xl text-black flex items-center">
+                <span className="font-bold">Paper Towels: </span>
+                <span className="ml-2">
+                  {selectedRowData['paperTowels'] === null ? (
+                    '--'
+                  ) : selectedRowData['paperTowels'] ? (
+                    <FaCheck />
+                  ) : (
+                    <FaX />
+                  )}
+                </span>
+              </h1>
+              <h1 className="py-4  text-xl text-black">
+                <span className="font-bold">Ratings: </span>
+                <span className="ml-2">
+                  {selectedRowData['ratings'] ?? '--'}
+                </span>
+              </h1>
+              <h1 className="py-4  text-xl text-black flex items-center">
+                <span className="font-bold">Seat Covers: </span>
+                <span className="ml-2">
+                  {selectedRowData['seatCovers'] === null ? (
+                    '--'
+                  ) : selectedRowData['seatCovers'] ? (
+                    <FaCheck />
+                  ) : (
+                    <FaX />
+                  )}
+                </span>
+              </h1>
+              <h1 className="py-4  text-xl text-black">
+                <span className="font-bold">Latitude: </span>
+                <span className="ml-2">
+                  {selectedRowData['latitude'] ?? '--'}
+                </span>
+              </h1>
+              <h1 className="py-4  text-xl text-black">
+                <span className="font-bold">Longitude: </span>
+                <span className="ml-2">
+                  {selectedRowData['longitude'] ?? '--'}
+                </span>
               </h1>
               <div className="pagination flex justify-center my-6">
                 <button

@@ -77,8 +77,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           <img
             src={Logo}
             alt="Logo"
-            // style={{ width: '50px', height: '50px' }}
-            className="w-20 h-20 lg:w-52  lg:h-36"
+            className="w-20 h-20 lg:w-52 lg:h-36 object-contain" // Added object-cover to maintain aspect ratio
           />
         </NavLink>
 

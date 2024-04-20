@@ -58,7 +58,7 @@ const JokeComponents = () => {
         if (data.status) {
           setJokeData([]);
         } else {
-          setJokeData(data);
+          setJokeData(data.reverse());
         }
       })
       .catch((error) => console.log('Error fetching data:', error));
