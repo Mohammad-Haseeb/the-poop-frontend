@@ -67,7 +67,7 @@ const SignIn: React.FC = () => {
                 src={Logo}
                 alt="Logo"
                 // style={{ width: '50px', height: '50px' }}
-                className="w-20 h-20 lg:w-52  lg:h-36"
+                className="w-20 h-20 lg:w-52  lg:h-36 object-contain"
               />
             </div>
             <h2 className="mb-9 text-center text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
