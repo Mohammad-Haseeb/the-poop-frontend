@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
-import Loader from '../../common/Loader';
 import { FaCheck, FaX } from 'react-icons/fa6';
-
+import EditReviewComment from './EditReviewComment';
 const ReviewComponents = () => {
   const [poopData, setPoopData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -40,6 +39,34 @@ const ReviewComponents = () => {
         // setReloadData(true);
         setReloadData(!reloadData);
         console.log('user role updated successfully:', data);
+        return data;
+      } else {
+        throw new Error(`HTTP error: ${response.status}`);
+      }
+    } catch (error) {
+      console.error('Error updating user role:', error);
+    }
+  };
+  const commentApproved = async (selectedUserData: any) => {
+    console.log('SELECTED USER DATA : ', selectedUserData);
+    const url = `https://api.needtopoop.com/review/changeCommentStatus/${selectedUserData.id}`;
+
+    try {
+      const response = await fetch(url, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userData}`,
+        },
+
+        // body: JSON.stringify(body),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        // setReloadData(true);
+        setReloadData(!reloadData);
+        console.log('comment updated successfully:', data);
         return data;
       } else {
         throw new Error(`HTTP error: ${response.status}`);
@@ -127,6 +154,9 @@ const ReviewComponents = () => {
               <th className="py-4 px-4 font-medium text-xl text-black dark:text-white">
                 Comments
               </th>
+              <th className="py-4 px-4 font-medium text-xl text-black dark:text-white">
+                Comment Approved
+              </th>
               <th className="py-4 px-4 font-medium text-black dark:text-white">
                 Created At
               </th>
@@ -155,6 +185,19 @@ const ReviewComponents = () => {
                   </td>
                   <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
                     {data['comments'] ?? '--'}
+                  </td>
+                  <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
+                    <label className="relative inline-flex cursor-pointer items-center">
+                      <input
+                        id="switch"
+                        type="checkbox"
+                        className="peer sr-only"
+                        checked={data['commentApproved']}
+                        onChange={() => commentApproved(data)}
+                      />
+                      <label htmlFor="switch" className="hidden"></label>
+                      <div className="peer h-6 w-11 rounded-full border bg-slate-200 after:absolute after:left-[2px] after:top-0.5 after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-slate-800 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:ring-green-300"></div>
+                    </label>
                   </td>
 
                   <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
@@ -200,6 +243,11 @@ const ReviewComponents = () => {
                         View Details
                       </button>
                     </span>
+                    <EditReviewComment
+                      reloadData={reloadData}
+                      setReloadData={setReloadData}
+                      data={data}
+                    />
                   </td>
                 </tr>
               );
