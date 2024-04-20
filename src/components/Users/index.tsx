@@ -30,7 +30,12 @@ const PoopComponents = () => {
         if (data.status) {
           setPoopData([]);
         } else {
-          setPoopData(data);
+          setPoopData(
+            data.sort(
+              (a: Date, b: Date) =>
+                new Date(b.createdAt) - new Date(a.createdAt),
+            ),
+          );
         }
       })
       .catch((error) => console.error('Error fetching data:', error));

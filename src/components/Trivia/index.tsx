@@ -57,7 +57,7 @@ const TriviaComponents = () => {
         if (data.status) {
           setTriviaData([]);
         } else {
-          setTriviaData(data);
+          setTriviaData(data.reverse());
         }
       })
       .catch((error) => console.error('Error fetching data:', error));
