@@ -13,7 +13,7 @@ const SignIn: React.FC = () => {
     event.preventDefault();
 
     const url = 'https://api.needtopoop.com/users/token'; // Use the correct URL
-    const body = { email, password };
+    const body = { email: email.toLowerCase(), password };
 
     try {
       const response = await fetch(url, {
