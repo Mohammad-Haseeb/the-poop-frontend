@@ -91,7 +91,12 @@ const ReviewComponents = () => {
         if (data.status) {
           setPoopData([]);
         } else {
-          setPoopData(data);
+          setPoopData(
+            data.sort(
+              (a: Date, b: Date) =>
+                new Date(b.createdAt) - new Date(a.createdAt),
+            ),
+          );
 
           // Fetch address for each latitude and longitude pair
           const promises = data.map(async (item: any) => {
