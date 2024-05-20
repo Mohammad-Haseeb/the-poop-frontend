@@ -11,8 +11,9 @@ const EditPoop = ({
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   // const [joke, setJoke] = useState(data['joke'] ?? '');
-  const [latitude, setLatitude] = useState(data['latitude'] ?? '');
-  const [longitude, setLongitude] = useState(data['longitude'] ?? '');
+  // const [latitude, setLatitude] = useState(data['latitude'] ?? '');
+  // const [longitude, setLongitude] = useState(data['longitude'] ?? '');
+  const [newLocation, setNewLocation] = useState(data?.location ?? "");
   let userData = localStorage.getItem('user');
   if (userData) {
     userData = JSON.parse(userData).access_token;
@@ -25,8 +26,7 @@ const EditPoop = ({
     event.preventDefault();
     const url = `https://api.needtopoop.com/poop/${data.id}`;
     const body = {
-      latitude,
-      longitude,
+      newLocation
     };
 
     try {
@@ -83,19 +83,19 @@ const EditPoop = ({
                 <form onSubmit={submit}>
                   <div className="mb-4">
                     <label className="mb-2.5 block font-medium text-gray-900 dark:text-gray-300">
-                      Latitude
+                      Location
                     </label>
                     <input
                       type="text"
-                      placeholder="Latitude"
+                      placeholder="Location"
                       required
                       className="w-full rounded-lg border border-gray-300 bg-white py-2 pl-4 pr-10 text-gray-900 outline-none focus:border-primary focus:ring-primary dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-                      value={latitude}
-                      onChange={(e) => setLatitude(e.target.value)}
+                      value={newLocation}
+                      onChange={(e) => setNewLocation(e.target.value)}
                     />
                   </div>
 
-                  <div className="mb-4">
+                  {/* <div className="mb-4">
                     <label className="mb-2.5 block font-medium text-gray-900 dark:text-gray-300">
                       Longitude
                     </label>
@@ -107,7 +107,7 @@ const EditPoop = ({
                       value={longitude}
                       onChange={(e) => setLongitude(e.target.value)}
                     />
-                  </div>
+                  </div> */}
                   <div className="mb-5">
                     <input
                       type="submit"

@@ -2,14 +2,20 @@ import React, { useEffect, useState } from 'react';
 // import AddPoop from './AddPoop';
 import Loader from '../../common/Loader';
 import { FaCheck, FaX } from 'react-icons/fa6';
+import { FaCheck as FaCheck2 } from "react-icons/fa";
+import { baseUrl } from '../../constants/data';
+
 // import EditPoop from './EditPoop';
 
 const PoopComponents = () => {
   const [poopData, setPoopData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [showConfirmModel, setShowConfirmModel] = useState(false)
   let userData = localStorage.getItem('user');
   const [reloadData, setReloadData] = useState(false);
+  const [idToDelete, setIdToDelete] = useState("");
+  const [loading, setLoading] = useState < boolean > (true);
 
   if (userData) {
     userData = JSON.parse(userData).access_token;
@@ -21,7 +27,8 @@ const PoopComponents = () => {
       Authorization: `Bearer ${userData}`,
     };
 
-    fetch('https://api.needtopoop.com/users', {
+    setLoading(true)
+    fetch(`${baseUrl}/users`, {
       method: 'GET',
       headers: headers,
     })
@@ -37,6 +44,7 @@ const PoopComponents = () => {
             ),
           );
         }
+        setLoading(false)
       })
       .catch((error) => console.error('Error fetching data:', error));
   }, [reloadData]);
@@ -46,6 +54,7 @@ const PoopComponents = () => {
     const url = `https://api.needtopoop.com/users/changeRole/${selectedUserData.id}`;
 
     try {
+      setLoading(true)
       const response = await fetch(url, {
         method: 'PATCH',
         headers: {
@@ -65,17 +74,21 @@ const PoopComponents = () => {
       } else {
         throw new Error(`HTTP error: ${response.status}`);
       }
+      setLoading(false)
     } catch (error) {
       console.error('Error updating user role:', error);
     }
   };
   const deleteTrivia = (id: any) => {
+    console.log(id)
     const headers = {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${userData}`,
     };
 
-    fetch(`https://api.needtopoop.com/users/${id}`, {
+    // fetch(`https://api.needtopoop.com/users/${id}`, {
+    setLoading(true)
+    fetch(`${baseUrl}/users/${id}`, {
       method: 'DELETE',
       headers: headers,
     })
@@ -86,6 +99,7 @@ const PoopComponents = () => {
         setReloadData(!reloadData); // Refresh the data after deletion
       })
       .catch((error) => console.error('Error deleting trivia:', error));
+    setLoading(false)
   };
 
   const lastItemIndex = currentPage * itemsPerPage;
@@ -97,11 +111,31 @@ const PoopComponents = () => {
   const goToNextPage = () => setCurrentPage(currentPage + 1);
   const goToPreviousPage = () => setCurrentPage(currentPage - 1);
 
+  const handleConfirmModel = (id: any) => {
+    setIdToDelete(id);
+    setShowConfirmModel(true)
+  }
+
   return (
     <>
+      {showConfirmModel && <div className='w-full h-full grid place-items-center absolute top-0 left-0 bg-black/20 z-[999999]'>
+        <div className='bg-white p-4 rounded-md shadow w-fit'>
+          <p>Are you sure want to delete this user!</p>
+          <div className='flex gap-8 mt-3 w-fit mx-auto'>
+            <span onClick={() => setShowConfirmModel(false)} className='py-1 cursor-pointer text-red-500'>Cancel</span>
+            <span onClick={() => {
+              deleteTrivia(idToDelete);
+              setShowConfirmModel(false)
+            }} className='py-1 cursor-pointer text-green-600'>Yes</span>
+          </div>
+        </div>
+      </div>}
       <div className="px-5 pt-6 pb-2.5">
         {/* <AddPoop reloadData={reloadData} setReloadData={setReloadData} /> */}
       </div>
+      {loading && <div style={{ animationDuration: "1s" }} className='w-14 z-[999] h-15 animate-rotating  border-4 rounded-xl border-red-700 bg-transparent 500 absolute top[50%] left-[50%] -translate-x-[50%] -translate-y-[50%]'>
+
+      </div>}
       <div className="relative overflow-x-auto rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark ">
         <table className="w-full table-auto text-left">
           <thead>
@@ -169,8 +203,8 @@ const PoopComponents = () => {
                   <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
                     {data['createdAt']
                       ? new Date(data['createdAt'])
-                          .toLocaleString()
-                          .replaceAll('/', '-')
+                        .toLocaleString()
+                        .replaceAll('/', '-')
                       : '--'}
                   </td>
                   <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
@@ -189,7 +223,8 @@ const PoopComponents = () => {
                   <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
                     <span className="inline-flex space-x-2">
                       <button
-                        onClick={() => deleteTrivia(data['id'])}
+                        onClick={() => handleConfirmModel(data['id'])}
+                        // onClick={() => deleteTrivia(data['id'])}
                         className="mb-4 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
                         type="button"
                       >

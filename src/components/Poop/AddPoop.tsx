@@ -10,6 +10,7 @@ const AddPoop = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [latitude, setLatitude] = useState('');
   const [longitude, setLongitude] = useState('');
+  const [location, setLocation] = useState('');
   let userData = localStorage.getItem('user');
   if (userData) {
     userData = JSON.parse(userData).access_token;
@@ -81,29 +82,15 @@ const AddPoop = ({
                 <form onSubmit={submit}>
                   <div className="mb-4">
                     <label className="mb-2.5 block font-medium text-gray-900 dark:text-gray-300">
-                      Latitude
+                      Location
                     </label>
                     <input
                       type="text"
-                      placeholder="Latitude"
+                      placeholder="Location"
                       required
                       className="w-full rounded-lg border border-gray-300 bg-white py-2 pl-4 pr-10 text-gray-900 outline-none focus:border-primary focus:ring-primary dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-                      value={latitude}
-                      onChange={(e) => setLatitude(e.target.value)}
-                    />
-                  </div>
-
-                  <div className="mb-4">
-                    <label className="mb-2.5 block font-medium text-gray-900 dark:text-gray-300">
-                      Longitude
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="Longitude"
-                      required
-                      className="w-full rounded-lg border border-gray-300 bg-white py-2 pl-4 pr-10 text-gray-900 outline-none focus:border-primary focus:ring-primary dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-                      value={longitude}
-                      onChange={(e) => setLongitude(e.target.value)}
+                      value={location}
+                      onChange={(e) => setLocation(e.target.value)}
                     />
                   </div>
 

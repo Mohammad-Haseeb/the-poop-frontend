@@ -70,16 +70,13 @@ const PoopComponents = () => {
       headers: headers,
     })
       .then((response) => response.json())
-      .then(async (data) => {
+      .then(async (data: any) => {
         if (data.status) {
           setPoopData([]);
         } else {
           // setPoopData(data);
           setPoopData(
-            data.sort(
-              (a: Date, b: Date) =>
-                new Date(b.createdAt) - new Date(a.createdAt),
-            ),
+            data.sort((a: Date, b: Date) => new Date(b.createdAt) - new Date(a.createdAt),),
           );
 
           // Fetch address for each latitude and longitude pair
@@ -141,11 +138,11 @@ const PoopComponents = () => {
                 Id
               </th>
               <th className="py-4 px-4 font-bold text-xl text-black dark:text-white">
-                Latitude
+                Location
               </th>
-              <th className="py-4 px-4 font-medium text-xl text-black dark:text-white">
+              {/* <th className="py-4 px-4 font-medium text-xl text-black dark:text-white">
                 Longitude
-              </th>
+              </th> */}
               <th className="py-4 px-4 font-medium text-xl text-black dark:text-white">
                 Address
               </th>
@@ -173,19 +170,19 @@ const PoopComponents = () => {
                     {itemIndex}
                   </td>
                   <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
-                    {data['latitude'] ?? '--'}
+                    {data['location'] ?? '--'}
                   </td>
-                  <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
+                  {/* <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
                     {data['longitude'] ?? '--'}
-                  </td>
+                  </td> */}
                   <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
                     {addressData[data['id']] ?? '--'}
                   </td>
                   <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
                     {data['createdAt']
                       ? new Date(data['createdAt'])
-                          .toLocaleString()
-                          .replaceAll('/', '-')
+                        .toLocaleString()
+                        .replaceAll('/', '-')
                       : '--'}
                   </td>
                   <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
@@ -217,6 +214,7 @@ const PoopComponents = () => {
                         reloadData={reloadData}
                         setReloadData={setReloadData}
                         data={data}
+
                       />
                     </span>
                   </td>

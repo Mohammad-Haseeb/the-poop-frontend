@@ -1,6 +1,11 @@
 import { useEffect, useState } from 'react';
 import { FaCheck, FaX } from 'react-icons/fa6';
 import EditReviewComment from './EditReviewComment';
+import { baseUrl } from '../../constants/data';
+import { MdDelete } from "react-icons/md";
+import { CiEdit } from "react-icons/ci";
+import { FaEye } from "react-icons/fa";
+import "./style.css"
 const ReviewComponents = () => {
   const [poopData, setPoopData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -20,8 +25,7 @@ const ReviewComponents = () => {
   }
 
   const toggleRole = async (selectedUserData: any) => {
-    console.log('SELECTED USER DATA : ', selectedUserData);
-    const url = `https://api.needtopoop.com/review/changeStatus/${selectedUserData.id}`;
+    const url = `${baseUrl}/review/changeStatus/${selectedUserData.id}`;
 
     try {
       const response = await fetch(url, {
@@ -48,8 +52,7 @@ const ReviewComponents = () => {
     }
   };
   const commentApproved = async (selectedUserData: any) => {
-    console.log('SELECTED USER DATA : ', selectedUserData);
-    const url = `https://api.needtopoop.com/review/changeCommentStatus/${selectedUserData.id}`;
+    const url = `${baseUrl}/review/changeCommentStatus/${selectedUserData.id}`;
 
     try {
       const response = await fetch(url, {
@@ -65,6 +68,35 @@ const ReviewComponents = () => {
       if (response.ok) {
         const data = await response.json();
         // setReloadData(true);
+        console.log("ok")
+        setReloadData(!reloadData);
+        console.log('comment updated successfully:', data);
+        return data;
+      } else {
+        throw new Error(`HTTP error: ${response.status}`);
+      }
+    } catch (error) {
+      console.error('Error updating user role:', error);
+    }
+  };
+  const imageApproved = async (selectedUserData: any) => {
+    const url = `${baseUrl}/review/changeImageStatus/${selectedUserData.id}`;
+
+    try {
+      const response = await fetch(url, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userData}`,
+        },
+
+        // body: JSON.stringify(body),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        // setReloadData(true);
+        console.log("ok")
         setReloadData(!reloadData);
         console.log('comment updated successfully:', data);
         return data;
@@ -82,7 +114,7 @@ const ReviewComponents = () => {
       Authorization: `Bearer ${userData}`,
     };
 
-    fetch('https://api.needtopoop.com/review', {
+    fetch(`${baseUrl}/review`, {
       method: 'GET',
       headers: headers,
     })
@@ -91,17 +123,13 @@ const ReviewComponents = () => {
         if (data.status) {
           setPoopData([]);
         } else {
-          setPoopData(
-            data.sort(
-              (a: Date, b: Date) =>
-                new Date(b.createdAt) - new Date(a.createdAt),
-            ),
-          );
+          console.log(data)
+          setPoopData(data);
 
           // Fetch address for each latitude and longitude pair
           const promises = data.map(async (item: any) => {
             const response = await fetch(
-              `https://maps.googleapis.com/maps/api/geocode/json?latlng=${item.latitude},${item.longitude}&key=AIzaSyAio7xWYbTSPn9tXZygNECd5h0Rejwoagc`,
+              `https://maps.googleapis.com/maps/api/geocode/json?latlng=${item.location}&key=AIzaSyAio7xWYbTSPn9tXZygNECd5h0Rejwoagc`,
             );
             const json = await response.json();
             setAddressData((prevData) => ({
@@ -121,7 +149,7 @@ const ReviewComponents = () => {
       Authorization: `Bearer ${userData}`,
     };
 
-    fetch(`https://api.needtopoop.com/review/${id}`, {
+    fetch(`${baseUrl}/review/${id}`, {
       method: 'DELETE',
       headers: headers,
     })
@@ -143,37 +171,54 @@ const ReviewComponents = () => {
   const goToNextPage = () => setCurrentPage(currentPage + 1);
   const goToPreviousPage = () => setCurrentPage(currentPage - 1);
 
+  const [showImageGallery, setShowImageGallery] = useState(false)
+  const [selectedGallery, setSelectedGallery] = useState()
+  const handleGalleryClick = (data: any) => {
+    console.log(data)
+    setSelectedGallery(data)
+    setShowImageGallery(true);
+  }
   return (
     <>
       <div className="px-5 pt-6 pb-2.5"></div>
       <div className="relative overflow-x-auto rounded-sm border border-stroke bg-white shadow-default dark:border-red dark:bg-boxdark ">
         <table className="w-full table-auto text-left">
           <thead>
-            <tr className="bg-gray-2 text-left dark:bg-meta-4">
-              <th className="py-4 px-4 font-bold text-xl text-black dark:text-white">
+            <tr className="bg-gray-2 text-center dark:bg-meta-4">
+              <th className="p-2 font-bold text-xl text-black dark:text-white">
                 Id
               </th>
-              <th className="py-4 px-4 font-medium text-xl text-black dark:text-white">
+              <th className="p-2 font-medium text-[1rem] text-black dark:text-white">
                 Address
               </th>
-              <th className="py-4 px-4 font-medium text-xl text-black dark:text-white">
+              <th className="p-2 font-medium text-[1rem] text-black dark:text-white">
+                Location
+              </th>
+              <th className="p-2 font-medium text-[1rem] text-black dark:text-white">
                 Comments
               </th>
-              <th className="py-4 px-4 font-medium text-xl text-black dark:text-white">
+              <th className="p-2 font-medium text-[1rem] text-black dark:text-white">
                 Comment Approved
               </th>
-              <th className="py-4 px-4 font-medium text-black dark:text-white">
+              <th className="p-2 font-medium text-[1rem] text-black dark:text-white">
                 Created At
               </th>
-              <th className="py-4 px-4 font-medium text-black dark:text-white">
+              <th className="p-2 font-medium text-[1rem] text-black dark:text-white">
                 Created By
               </th>
-              <th className="py-4 px-4 font-medium text-black dark:text-white">
+              <th className="p-2 font-medium text-[1rem] text-black dark:text-white">
                 Approved
               </th>
-              <th className="py-4 px-4 font-medium text-black dark:text-white">
+              <th className="p-2 font-medium text-[1rem] text-black dark:text-white">
+                Image Approved
+              </th>
+              <th className="p-2 font-medium text-[1rem] text-black dark:text-white">
+                Images
+              </th>
+              <th className="p-2 font-medium text-[1rem] text-black dark:text-white">
                 Action
               </th>
+
             </tr>
           </thead>
           <tbody>
@@ -189,70 +234,77 @@ const ReviewComponents = () => {
                     {addressData[data['id']] ?? '--'}
                   </td>
                   <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
+                    {data['location'] ?? '--'}
+                  </td>
+                  <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
                     {data['comments'] ?? '--'}
                   </td>
                   <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
-                    <label className="relative inline-flex cursor-pointer items-center">
-                      <input
-                        id="switch"
-                        type="checkbox"
-                        className="peer sr-only"
-                        checked={data['commentApproved']}
+                    <label className="switch">
+                      <input type="checkbox"
+                        checked={data["commentApproved"]}
                         onChange={() => commentApproved(data)}
+
                       />
-                      <label htmlFor="switch" className="hidden"></label>
-                      <div className="peer h-6 w-11 rounded-full border bg-slate-200 after:absolute after:left-[2px] after:top-0.5 after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-slate-800 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:ring-green-300"></div>
+                      <span className="slider"></span>
                     </label>
+
                   </td>
 
                   <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
                     {data['createdAt']
                       ? new Date(data['createdAt'])
-                          .toLocaleString()
-                          .replaceAll('/', '-')
+                        .toLocaleString()
+                        .replaceAll('/', '-')
                       : '--'}
                   </td>
                   <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
                     {data['user']['userName'] ?? '--'}
                   </td>
                   <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
-                    <label className="relative inline-flex cursor-pointer items-center">
-                      <input
-                        id="switch"
-                        type="checkbox"
-                        className="peer sr-only"
+                    <label className="switch">
+                      <input type="checkbox"
                         checked={data['approved']}
                         onChange={() => toggleRole(data)}
                       />
-                      <label htmlFor="switch" className="hidden"></label>
-                      <div className="peer h-6 w-11 rounded-full border bg-slate-200 after:absolute after:left-[2px] after:top-0.5 after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-slate-800 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:ring-green-300"></div>
+                      <span className="slider"></span>
                     </label>
+
                   </td>
                   <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
-                    <span className="inline-flex space-x-2">
-                      <button
+                    <label className="switch">
+                      <input type="checkbox"
+                        checked={data['imageApproved']}
+                        onChange={() => imageApproved(data)}
+                      />
+                      <span className="slider"></span>
+                    </label>
+
+                  </td>
+                  <td>
+                    <button
+                      onClick={() => handleGalleryClick(data["pictures"])}
+                      className='bg-red-700 text-white rounded-md p-1'>View Image</button>
+                  </td>
+                  <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
+
+                    <span className="inline-flex space-x-3">
+                      <MdDelete
                         onClick={() => deleteTrivia(data['id'])}
-                        className="mb-4 text-white bg-red-700	 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
-                        type="button"
-                      >
-                        Delete
-                      </button>
-                      <button
+                        className='size-8 cursor-pointer text-red-700' />
+
+                      <FaEye
                         onClick={() => {
                           setSelectedRowData(data);
                           toggleModal();
                         }}
-                        className="mb-4 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
-                        type="button"
-                      >
-                        View Details
-                      </button>
+                        className='size-8 cursor-pointer' />
+                      <EditReviewComment
+                        reloadData={reloadData}
+                        setReloadData={setReloadData}
+                        data={data}
+                      />
                     </span>
-                    <EditReviewComment
-                      reloadData={reloadData}
-                      setReloadData={setReloadData}
-                      data={data}
-                    />
                   </td>
                 </tr>
               );
@@ -286,10 +338,10 @@ const ReviewComponents = () => {
         >
           <div className="relative p-4 w-full max-w-md h-auto">
             <div className="relative px-4 bg-white rounded-lg shadow dark:bg-gray-700">
-              <h1 className="py-4 font-bold text-xl text-black text-center">
+              <h1 className="py-2 font-bold text-xl text-black text-center">
                 Details
               </h1>
-              <h1 className="py-4 text-xl text-black flex items-center">
+              <h1 className="py-2 text-sm text-black flex items-center">
                 <span className="font-bold">Auto Flushing Toilets:</span>
                 <span className="ml-2">
                   {selectedRowData['autoFlushingToilets'] === null ? (
@@ -301,7 +353,7 @@ const ReviewComponents = () => {
                   )}
                 </span>
               </h1>
-              <h1 className="py-4  text-xl text-black flex items-center">
+              <h1 className="py-2  text-sm text-black flex items-center">
                 <span className="font-bold"> Baby Changing Table: </span>
                 <span className="ml-2">
                   {selectedRowData['babyChangingtable'] === null ? (
@@ -313,7 +365,7 @@ const ReviewComponents = () => {
                   )}
                 </span>
               </h1>
-              <h1 className="py-4  text-xl text-black flex items-center">
+              <h1 className="py-2  text-sm text-black flex items-center">
                 <span className="font-bold">Free Toilet: </span>
                 <span className="ml-2">
                   {selectedRowData['freeToilet'] === null ? (
@@ -325,7 +377,7 @@ const ReviewComponents = () => {
                   )}
                 </span>
               </h1>
-              <h1 className="py-4  text-xl text-black flex items-center">
+              <h1 className="py-2  text-sm text-black flex items-center">
                 <span className="font-bold">Hand Dryer: </span>
                 <span className="ml-2">
                   {selectedRowData['handDryer'] === null ? (
@@ -337,7 +389,7 @@ const ReviewComponents = () => {
                   )}
                 </span>
               </h1>
-              <h1 className="py-4 text-xl text-black flex items-center">
+              <h1 className="py-2 text-sm text-black flex items-center">
                 <span className="font-bold">Handicap Accessible: </span>
                 <span className="ml-2">
                   {selectedRowData['handicapAccessible'] === null ? (
@@ -349,7 +401,7 @@ const ReviewComponents = () => {
                   )}
                 </span>
               </h1>
-              <h1 className="py-4 text-xl text-black flex items-center">
+              <h1 className="py-2 text-sm text-black flex items-center">
                 <span className="font-bold">Motion Activates Fixtures: </span>
                 <span className="ml-2">
                   {selectedRowData['motionActivatesFixtures'] === null ? (
@@ -361,13 +413,13 @@ const ReviewComponents = () => {
                   )}
                 </span>
               </h1>
-              <h1 className="py-4  text-xl text-black">
+              <h1 className="py-2  text-sm text-black">
                 <span className="font-bold">Number Of Stalls: </span>
                 <span className="ml-2">
                   {selectedRowData['numberOfStalls'] ?? '--'}
                 </span>
               </h1>
-              <h1 className="py-4 text-xl text-black flex items-center">
+              <h1 className="py-2 text-sm text-black flex items-center">
                 <span className="font-bold">Paper Towels: </span>
                 <span className="ml-2">
                   {selectedRowData['paperTowels'] === null ? (
@@ -379,13 +431,13 @@ const ReviewComponents = () => {
                   )}
                 </span>
               </h1>
-              <h1 className="py-4  text-xl text-black">
+              <h1 className="py-2  text-sm text-black">
                 <span className="font-bold">Ratings: </span>
                 <span className="ml-2">
                   {selectedRowData['ratings'] ?? '--'}
                 </span>
               </h1>
-              <h1 className="py-4  text-xl text-black flex items-center">
+              <h1 className="py-2  text-sm text-black flex items-center">
                 <span className="font-bold">Seat Covers: </span>
                 <span className="ml-2">
                   {selectedRowData['seatCovers'] === null ? (
@@ -397,23 +449,18 @@ const ReviewComponents = () => {
                   )}
                 </span>
               </h1>
-              <h1 className="py-4  text-xl text-black">
-                <span className="font-bold">Latitude: </span>
+              <h1 className="py-2  text-sm text-black">
+                <span className="font-bold">Location: </span>
                 <span className="ml-2">
-                  {selectedRowData['latitude'] ?? '--'}
+                  {selectedRowData['location'] ?? '--'}
                 </span>
               </h1>
-              <h1 className="py-4  text-xl text-black">
-                <span className="font-bold">Longitude: </span>
-                <span className="ml-2">
-                  {selectedRowData['longitude'] ?? '--'}
-                </span>
-              </h1>
+
               <div className="pagination flex justify-center my-6">
                 <button
                   onClick={toggleModal}
                   type="button"
-                  className=" cursor-pointer rounded-lg border border-primary bg-primary py-3 px-8 mb-6 text-white transition hover:bg-opacity-90"
+                  className=" cursor-pointer rounded-lg border border-primary bg-primary py-1 px-8 mb-6 text-white transition hover:bg-opacity-90"
                 >
                   Close
                 </button>
@@ -422,6 +469,15 @@ const ReviewComponents = () => {
           </div>
         </div>
       )}
+      {showImageGallery && <div onClick={() => setShowImageGallery(false)} className='absolute top-0 left-0 w-full grid place-items-center h-screen bg-black/10'>
+        <div className='w-[80%] bg-white'>
+          <div className='w-full md:p-8  grid grid-cols-2 gap-2'>
+            {selectedGallery && selectedGallery.length ? selectedGallery.map((item) => {
+              return <img key={item} src={item} alt="" />
+            }) : <div>No Images Found</div>}
+          </div>
+        </div>
+      </div>}
     </>
   );
 };

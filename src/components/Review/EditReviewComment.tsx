@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { baseUrl } from '../../constants/data';
+import { CiEdit } from 'react-icons/ci';
 
 const EditReviewComment = ({
   reloadData,
@@ -16,13 +18,12 @@ const EditReviewComment = ({
   if (userData) {
     userData = JSON.parse(userData).access_token;
   }
-  console.log('USER DATA', userData);
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
   const submit = async (event: React.FormEvent) => {
     event.preventDefault();
-    const url = `https://api.needtopoop.com/review/${data.id}`;
+    const url = `${baseUrl}/review/${data.id}`;
     const body = {
       ...data,
       comments: comment,
@@ -55,13 +56,16 @@ const EditReviewComment = ({
   };
   return (
     <>
-      <button
+      <CiEdit
+        onClick={toggleModal}
+        className='size-8 cursor-pointer' />
+      {/* <button
         onClick={toggleModal}
         className="mb-4 block text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
         type="button"
       >
         Edit Comment
-      </button>
+      </button> */}
 
       {isModalOpen && (
         <div

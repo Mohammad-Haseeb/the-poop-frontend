@@ -3,6 +3,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../../images/logo/logo.png';
 
 const SignIn: React.FC = () => {
+  const [loading, setLoading] = useState<boolean>(false);
+
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [status, setStatus] = useState('');
@@ -11,8 +14,8 @@ const SignIn: React.FC = () => {
 
   const submit = async (event: React.FormEvent) => {
     event.preventDefault();
-
-    const url = 'https://api.needtopoop.com/users/token'; // Use the correct URL
+    setLoading(true)
+    const url = 'http://localhost:8080/users/token'; // Use the correct URL
     const body = { email: email.toLowerCase(), password };
 
     try {
@@ -27,11 +30,13 @@ const SignIn: React.FC = () => {
         console.log('Login successful:', data);
         localStorage.setItem('user', JSON.stringify(data)); // Save the token or user data in localStorage
         navigate('/'); // Redirect to the home page or dashboard after successful login
+
       } else {
         setStatus('Invalid Credentials');
         console.error('Login failed:', response.status);
         // Handle login failure, e.g., show error message
       }
+      setLoading(false)
     } catch (error) {
       setStatus('Login Failed');
       console.error('Network error:', error);
@@ -40,8 +45,11 @@ const SignIn: React.FC = () => {
   };
 
   return (
-    <div className="rounded-sm dark:bg-boxdark">
+    <div className="relative rounded-sm dark:bg-boxdark">
       <div className="flex flex-wrap items-center">
+        {loading && <div style={{ animationDuration: "1s" }} className='w-14 h-15 animate-rotating  border-4 rounded-xl border-red-700 bg-transparent 500 absolute top[50%] left-[50%] -translate-x-[50%] -translate-y-[50%]'>
+
+        </div>}
         <div className="hidden w-full xl:block xl:w-1/2">
           <div className="py-17.5 px-26 text-center">
             <Link className="mb-5.5 inline-block" to="/">
@@ -53,7 +61,7 @@ const SignIn: React.FC = () => {
                   src={Logo}
                   alt="Logo"
                   style={{ width: '70%', height: '70%' }}
-                  // className="w-24 h-24 lg:w-52  lg:h-36"
+                // className="w-24 h-24 lg:w-52  lg:h-36"
                 />
               </div>
             </Link>
