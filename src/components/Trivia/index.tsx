@@ -103,11 +103,9 @@ const TriviaComponents = () => {
               <th className="min-w-[220px] py-4 px-4 fond-bold text-xl text-black dark:text-white xl:pl-11">
                 Trivia
               </th>
-              <th className="min-w-[150px] py-4 px-4 font-medium text-xl	 text-black dark:text-white">
-                Like
-              </th>
+            
               <th className="min-w-[120px] py-4 px-4 font-medium text-xl	text-black dark:text-white">
-                Dislike
+              Created By
               </th>
               <th className="py-4 px-4 font-medium text-black dark:text-white">
                 Created At
@@ -133,13 +131,10 @@ const TriviaComponents = () => {
                       >
                         {data['trivia'] ?? '--'}
                       </th>
+                    
                       <td className=" border-b border-[#eee] px-6 py-4  dark:border-strokedark">
                         {' '}
-                        {data['like'] ?? '--'}
-                      </td>
-                      <td className=" border-b border-[#eee] px-6 py-4  dark:border-strokedark">
-                        {' '}
-                        {data['dislike'] ?? '--'}
+                        {data['user']['userName']?? '--'}
                       </td>
                       <td className="border-b border-[#eee] px-6 py-4  dark:border-strokedark">
                         {new Date(data['createdAt'])
