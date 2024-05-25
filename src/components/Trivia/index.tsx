@@ -104,7 +104,7 @@ const TriviaComponents = () => {
                 Trivia
               </th>
             
-              <th className="min-w-[120px] py-4 px-4 font-medium text-xl	text-black dark:text-white">
+              <th className="py-4 px-4 font-medium text-black dark:text-white">
               Created By
               </th>
               <th className="py-4 px-4 font-medium text-black dark:text-white">
