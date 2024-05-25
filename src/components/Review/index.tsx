@@ -330,7 +330,7 @@ const ReviewComponents = () => {
         <div
           id="popup-modal"
           tabIndex={-1}
-          className="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full h-full"
+          className="overflow-y-auto overflow-x-hidden fixed top-30 right-0 left-0 z-50 flex justify-center items-center w-full h-full"
         >
           <div className="relative p-4 w-full max-w-md h-auto">
             <div className="relative px-4 bg-white rounded-lg shadow dark:bg-gray-700">
