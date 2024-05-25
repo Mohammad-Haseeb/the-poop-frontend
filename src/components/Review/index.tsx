@@ -188,9 +188,7 @@ const ReviewComponents = () => {
               <th className="p-2 font-bold text-xl text-black dark:text-white">
                 Id
               </th>
-              <th className="p-2 font-medium text-[1rem] text-black dark:text-white">
-                Address
-              </th>
+            
               <th className="p-2 font-medium text-[1rem] text-black dark:text-white">
                 Location
               </th>
@@ -230,9 +228,7 @@ const ReviewComponents = () => {
                     {itemIndex}
                   </td>
 
-                  <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
-                    {addressData[data['id']] ?? '--'}
-                  </td>
+                
                   <td className="border-b border-[#eee] px-6 py-4 dark:border-strokedark">
                     {data['location'] ?? '--'}
                   </td>
@@ -453,6 +449,13 @@ const ReviewComponents = () => {
                 <span className="font-bold">Location: </span>
                 <span className="ml-2">
                   {selectedRowData['location'] ?? '--'}
+                </span>
+              </h1>
+
+              <h1 className="py-2  text-sm text-black">
+                <span className="font-bold">Address: </span>
+                <span className="ml-2">
+                  {selectedRowData['address'] ?? '--'}
                 </span>
               </h1>
 
