@@ -89,7 +89,7 @@ const EditReviewComment = ({
                       Comment
                     </label>
                     <textarea
-                      placeholder="Latitude"
+                      placeholder="Type Comment"
                       required
                       className="w-full rounded-lg border border-gray-300 bg-white py-2 pl-4 pr-10 text-black outline-none focus:border-primary focus:ring-primary dark:border-gray-600 dark:bg-gray-700 dark:text-white"
                       value={comment}
@@ -101,7 +101,7 @@ const EditReviewComment = ({
                   <div className="mb-5">
                     <input
                       type="submit"
-                      value="Edit Toilet"
+                      value="Edit Comment"
                       className="w-full cursor-pointer rounded-lg border border-primary bg-red-800 p-4 text-white transition hover:bg-opacity-90"
                     />
                   </div>
