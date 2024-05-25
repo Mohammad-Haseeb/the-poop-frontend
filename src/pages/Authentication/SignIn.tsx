@@ -1,21 +1,21 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../../images/logo/logo.png';
-
+import { baseUrl } from '../../constants/data';
 const SignIn: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
-
-
+  
+  
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [status, setStatus] = useState('');
 
   const navigate = useNavigate(); // Create an instance of useNavigate
-
+  
   const submit = async (event: React.FormEvent) => {
     event.preventDefault();
     setLoading(true)
-    const url = 'http://localhost:8080/users/token'; // Use the correct URL
+    const url = baseUrl+'/users/token'; // Use the correct URL
     const body = { email: email.toLowerCase(), password };
 
     try {
